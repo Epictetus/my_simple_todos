@@ -1,0 +1,56 @@
+<div class="container">
+
+  <h1>MyTasks</h1>
+
+  <!-- 操作が成功したときに表示する -->
+  <% if notice %>
+    <p class="alert alert-success">
+      <a class="close" data-dismiss="alert">&times;</a>
+      <%= notice %>
+    </p>
+  <% end %>
+
+  <!-- 操作が失敗したときに表示する -->
+  <% if alert %>
+    <p class="alert alert-error">
+      <a class="close" data-dismiss="alert">&times;</a>
+      <%= alert %>
+    </p>
+  <% end %>
+
+  <!-- 入力フォーム -->
+  <div>
+    <%= form_tag({:controller => :tasks, :action => :create}, {:class => "input-append"}) do %>
+      <%= text_field_tag "task[name]", "", :id => "task_name" %>
+      <%= submit_tag "ADD", :class => "btn" %>
+    <% end %>
+  </div>
+
+  <!-- アイテム一覧 -->
+  <div>
+    <table class="table table-striped table-bordered">
+      <tbody>
+        <tr>
+          <th>Name</th>
+          <th>CreatedAt</th>
+          <th>UpdatedAt</th>
+          <th>Done</th>
+        </tr>
+        <% @tasks.each do |task| %>
+          <tr>
+            <td><%= task.name %></td>
+            <td class="span3">
+              <%= task.created_at.strftime('%Y/%m/%d %H:%M:%S') %>
+            </td>
+            <td class="span3">
+              <%= task.updated_at.strftime('%Y/%m/%d %H:%M:%S') %>
+            </td>
+            <td class="span1">
+              <%= button_to 'Done', { :action => "destroy", :id => task.id }, method: :delete, class: 'btn btn-small btn-primary' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
